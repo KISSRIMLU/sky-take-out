@@ -90,6 +90,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     /**
+     * 分页查询
      *
      * @param employeePageQueryDTO
      * @return
@@ -102,10 +103,57 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         Page<Employee> page = employeeMapper.pageQuery(employeePageQueryDTO);
 
+
         long total = page.getTotal();
         List<Employee> records = page.getResult();
+        records.forEach(employee -> employee.setPassword(null));
 
-        return new PageResult(total,records);
+        return new PageResult(total, records);
     }
+
+
+    /**
+     * 启用禁用员工账号
+     *
+     * @param status
+     * @param id
+     */
+    @Override
+    public void startOrStop(Integer status, Long id) {
+        //update employee set status =? where id =?
+
+        Employee employee = Employee.builder()
+                .id(id)
+                .status(status)
+                .build();
+
+        employeeMapper.update(employee);
+    }
+
+    /**
+     * 根据id查询回显
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public Employee getById(Long id) {
+        Employee employee = employeeMapper.getById(id);
+        employee.setPassword(null);
+        return employee;
+    }
+
+    /**
+     * 编辑员工信息
+     *
+     * @param employee
+     */
+    @Override
+    public void update(Employee employee) {
+
+        employeeMapper.update(employee);
+    }
+
+
 }
 
