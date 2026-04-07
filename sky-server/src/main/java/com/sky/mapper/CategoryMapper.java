@@ -47,4 +47,11 @@ public interface CategoryMapper {
      * @return
      */
     List<Category> list(Integer type);
+
+    /**
+     * 根据分类id查询套餐数量
+     * @param categoryId
+     * @return
+     */
+    Integer countByCategoryId(Long categoryId);
 }
